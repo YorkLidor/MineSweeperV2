@@ -1,0 +1,53 @@
+body {
+    background-color:rgb(62, 59, 57);
+    text-align: center;
+    align-items: center;
+}
+
+h1 {
+    padding-bottom: 10px;
+    color: rgb(162, 60, 60);
+    font-weight: 1200;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.styled-table {
+    padding:0%;
+}
+
+table {
+    display: inline-block;
+    margin: auto;
+    align-self: center;
+}
+
+.cell-show{
+    background-color: rgb(83, 206, 141);
+    padding: 5px;
+    width: 30px;
+    height: 30px;
+}
+
+.cell-hide{
+    background-color: rgba(231, 35, 35, 0.685);
+    font-size: 0;
+    padding: 5px;
+    width: 30px;
+    height: 30px;
+}
+
+.cell-flag {
+    background-color: rgba(231, 35, 35, 0.685);
+    font-size: 0;
+    padding: 5px;
+    width: 30px;
+    height: 30px;
+    background-image: url(../img/red-flag.png);
+    background-repeat: no-repeat;
+    background-position: top;
+}
+
+
+
+
+        
