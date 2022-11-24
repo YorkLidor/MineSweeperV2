@@ -14,7 +14,6 @@ function setMinesNegsCount(cellI, cellJ, mat) {
 
 //Expand 
 function neighborsExpand(el,cellI, cellJ) {
-    console.log('el:', el)
     var negsArr = []
     for (var i = cellI - 1; i <= cellI + 1; i++) {
         if (i < 0 || i >= gBoard.length) continue
@@ -42,15 +41,13 @@ function neighborsExpand(el,cellI, cellJ) {
     return negsArr
 }
 
-function onHandleKey(event, el, i, j) {
+function onRightClick(event, el, i, j) {
     if (!gGame.isOn) return
     //Strat timer
-    if(gIsFirstClick) {
+    if(gIsFirstClick && event.which === 3) {
         resetTime()
         gTimeIntervalId = setInterval(setTime, 1000)
-        gIsFirstClick = false
     }
-
     //Modal+Dom
     if (event.which === 3) {
         switch (el.className) {
@@ -72,16 +69,12 @@ function onHandleKey(event, el, i, j) {
     chackWin()
 }
 
-
-
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////
 function getRandomInt(min, max) {
     min = Math.ceil(min)
     max = Math.floor(max)
     return Math.floor(Math.random() * (max - min) + min)
 }
 
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //Timer
 var minutesLabel = document.getElementById("minutes")
 var secondsLabel = document.getElementById("seconds")
@@ -111,15 +104,5 @@ function resetTime() {
     minutesLabel.innerHTML = "00"
 }
 
-function getArrOfNegs(cellI, cellJ, mat) {
-    var neighborsCount = 0
-    for (var i = cellI - 1; i <= cellI + 1; i++) {
-        if (i < 0 || i >= mat.length) continue
-        for (var j = cellJ - 1; j <= cellJ + 1; j++) {
-            if (i === cellI && j === cellJ) continue
-            if (j < 0 || j >= mat[i].length) continue
-            if (mat[i][j].gameElement === BALL) neighborsCount++
-        }
-    }
-    return neighborsCount
-}
+
+
