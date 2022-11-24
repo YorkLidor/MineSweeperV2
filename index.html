@@ -10,21 +10,35 @@
 
 <body onload="initGame()" oncontextmenu="return false">
 
-    <h1>Mine Sweeper</h1>
-    <div>
-        <h2>Your time: </h2>
-        <h2 class="time">0.000</h2>
+    <div id="cubed"><h1>Mine Sweeper</h1></div>
+
+    <div class="timer">
+        <h2>
+            <label for="">Your Time is:</label>
+            <label id="minutes">00</label>
+            <label id="colon">:</label>
+            <label id="seconds">00</label>
+        </h2>
     </div>
 
-    <div class="level-buttoms">
-        <button  onclick="levelChoose(4,2)">Beginner</button>
-        <button  onclick="levelChoose(8,14)">Medium</button>
-        <button  onclick="levelChoose(12,32)">Expert</button>
+    <div style="display: inline-block;" >
+        <h2>LIVES LEFT <span class="lives"></span></h2>
+    </div>
+
+    <div class="hint" style="display: inline-block;" >
+        <h2>HINTS<span onclick="hintClick()" class="hint">💡💡💡</span></h2>
+    </div>
+
+    <div style="padding: 10px;" class="level-buttoms" >
+        <button class="glow-on-hover" type="button" onclick="levelChoose(4,2,1)">Beginner</button>
+        <button class="glow-on-hover" type="button" onclick="levelChoose(8,14,2)">Medium</button>
+        <button class="glow-on-hover" type="button" onclick="levelChoose(12,32,3)">Expert</button>
+    </div>
+
+    <div>
+        <h1 class="emoji"><img onclick="restartGame()" class ="face-img" src="./img/happyFace.png" ></h1>
     </div>
         
-    <div class="lives">
-        <h2><span class="lives"></span>LIVES LEFT</h2>
-    </div>
 
     <main class="main-div">
         <table border="10" cellpadding="30" class="styled-table">
