@@ -12,13 +12,17 @@ var gIsFirstClick = true
 var gIsHint = false
 
 function initGame() {
+    gSafeClickLeft = 3
+    randerSafeClick()
+    setBestScoreToModal()
     resetTime()
     gIsFirstClick = true
     gGame = { isOn: false, shownCount: 0, markedCount: 0, secsPassed: 0, lives: 1 }
     //Modal
     gBoard = buildBoard(gLevel.SIZE)
-    //Dom
+    //Dom 
     renderBoard(gBoard)
+    setFirstHints()
     gGame.isOn = true
 }
 
@@ -86,32 +90,42 @@ function renderBoard() {
 function onCellClicked(el, i, j) {
     //Stop All if LOSE/WIN
     if (!gGame.isOn) return
+    
+    if(gIsFirstClick && gIsHintClicked) {
+        alert('I promise you won\'t hit mine on the first step')
+        gIsHintClicked = false
+        return
+    } else if (gIsHintClicked && isHintsLeft()) {
+        var neighbors = getArrOfNonShowNeighbors(el, i, j)
+        revelArrOfElemntsForSec(neighbors)
+        gHintsLeft--
+        gIsHintClicked = false
+        gIsHintClickedForCheckLose = true
+        renderHints()
+    } 
+    
+    
     if(gIsFirstClick) {
         //Bild + render
         setRandomMines(gBoard, gLevel.SIZE, i ,j)
         setNegs(gLevel.SIZE, gBoard)
         renderBoard(gBoard)
-        // el.className = 'cell-show'
-        console.log(el.className)
         //Timer
         resetTime()
         gTimeIntervalId = setInterval(setTime, 1000)
         gIsFirstClick = false
-
+        
         var gBoardCurrClicked = getCellFromTd(el)
         el = getTdFromCell(gBoardCurrClicked)
     }
-    
+
     //Expand
     if (+el.innerText === 0 && el.className != 'cell-flag') {
-        console.log('bdika1')
         neighborsExpand(el, i, j)
     } else {
-        console.log('bdika2')
         //Modal + Dom
         switch (el.className) {
             case 'cell-hide':
-                console.log('bdika3')
                 el.className = 'cell-show'
                 gBoard[i][j].isShown = true
                 gGame.shownCount++
@@ -123,9 +137,13 @@ function onCellClicked(el, i, j) {
         }
     }
     //chack WIN/LOSE
-    chackLose(i, j, el)
-    gameEmojiChange(gBoard, i, j, el)
-    chackWin()
+    if(gIsHintClickedForCheckLose) {
+        gIsHintClickedForCheckLose = false
+    } else {
+        chackLose(i, j, el)
+        gameEmojiChange(gBoard, i, j, el)
+        chackWin()
+    } 
 }
 
 function chackLose(i, j, el) {
@@ -149,6 +167,9 @@ function levelChoose(size, mines, lives) {
 
 function gameWin() {
     document.querySelector('.face-img').src = "./img/winFace.png"
+    var level = getCurrLevel()
+    populateStorage(level,gTotalSeconds)
+    setBestScoreToModal()
     clearInterval(gTimeIntervalId)
     gGame.isOn = false
 }
@@ -160,7 +181,6 @@ function chackWin() {
 }
 
 function getTdFromCell(cell) {
-    console.log(cell)
     const i = cell.location.i
     const j = cell.location.j
     const td = document.getElementById(`${i}-${j}`)
@@ -201,7 +221,6 @@ function gameEmojiChange(board, i, j, el) {
 function restartGame() {
     initGame()
     gLevel.LIVES = gCurrLives
-    console.log('gCurrLives:', gCurrLives)
     document.querySelector('.face-img').src = "./img/happyFace.png"
     if (gCurrLives === 1) {
         document.querySelector('.lives').innerText = '💖'
